@@ -14,4 +14,8 @@ Trained Weights: https://github.com/abdulbhutta/Single-Object-Detection/tree/mai
 
 Dataset: http://got-10k.aitestunion.com/downloads
 
-Report: 
+Report: https://github.com/abdulbhutta/Single-Object-Detection/blob/main/AbdulBhutta_FinalReport.pdf
+
+Notebook: https://github.com/abdulbhutta/Single-Object-Detection/blob/main/AbdulBhutta_Assignment2.ipynb
+
+NanoTrackv1 Official Repo: https://github.com/HonglinChu/SiamTrackers
