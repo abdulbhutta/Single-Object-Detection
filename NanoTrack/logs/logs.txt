@@ -1,0 +1,4084 @@
+[2024-06-29 05:48:44,473-rk0-train.py#262] Version Information: 
+commit : 
+  log  : 
+
+[2024-06-29 05:48:44,473-rk0-train.py#263] config 
+{
+    "META_ARC": "nanotrack",
+    "CUDA": true,
+    "TRAIN": {
+        "NEG_NUM": 16,
+        "POS_NUM": 16,
+        "TOTAL_NUM": 64,
+        "EXEMPLAR_SIZE": 127,
+        "SEARCH_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "RESUME": "",
+        "PRETRAINED": "",
+        "LOG_DIR": "./logs",
+        "SNAPSHOT_DIR": "./models/snapshot",
+        "EPOCH": 50,
+        "START_EPOCH": 0,
+        "NUM_CONVS": 4,
+        "BATCH_SIZE": 32,
+        "NUM_WORKERS": 8,
+        "MOMENTUM": 0.9,
+        "WEIGHT_DECAY": 0.0001,
+        "CLS_WEIGHT": 1.0,
+        "LOC_WEIGHT": 1.0,
+        "PRINT_FREQ": 20,
+        "LOG_GRADS": false,
+        "GRAD_CLIP": 10.0,
+        "BASE_LR": 0.005,
+        "LR": {
+            "TYPE": "log",
+            "KWARGS": {
+                "start_lr": 0.005,
+                "end_lr": 0.0005
+            }
+        },
+        "LR_WARMUP": {
+            "WARMUP": true,
+            "TYPE": "step",
+            "EPOCH": 5,
+            "KWARGS": {
+                "start_lr": 0.001,
+                "end_lr": 0.005,
+                "step": 1
+            }
+        }
+    },
+    "MASK": {
+        "MASK": false
+    },
+    "DATASET": {
+        "TEMPLATE": {
+            "SHIFT": 4,
+            "SCALE": 0.05,
+            "BLUR": 0.0,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "SEARCH": {
+            "SHIFT": 64,
+            "SCALE": 0.18,
+            "BLUR": 0.2,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "NEG": 0.2,
+        "GRAY": 0.0,
+        "NAMES": [
+            "GOT"
+        ],
+        "VID": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "YOUTUBEBB": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 3,
+            "NUM_USE": 100000
+        },
+        "COCO": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "DET": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "GOT": {
+            "ROOT": "data/GOT-10k/crop511",
+            "ANNO": "data/GOT-10k/train.json",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "LASOT": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "VIDEOS_PER_EPOCH": 100000
+    },
+    "BACKBONE": {
+        "TYPE": "mobilenetv3_small",
+        "KWARGS": {
+            "used_layers": [
+                4
+            ]
+        },
+        "PRETRAINED": "./models/pretrained/mobilenetv3_small_1.0.pth",
+        "TRAIN_LAYERS": [
+            "features"
+        ],
+        "LAYERS_LR": 0.1,
+        "TRAIN_EPOCH": 10
+    },
+    "ADJUST": {
+        "ADJUST": true,
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        },
+        "TYPE": "AdjustLayer"
+    },
+    "BAN": {
+        "BAN": true,
+        "TYPE": "DepthwiseBAN",
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        }
+    },
+    "POINT": {
+        "STRIDE": 16
+    },
+    "TRACK": {
+        "TYPE": "NanoTracker",
+        "PENALTY_K": 0.148,
+        "WINDOW_INFLUENCE": 0.462,
+        "LR": 0.39,
+        "EXEMPLAR_SIZE": 127,
+        "INSTANCE_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "CONTEXT_AMOUNT": 0.5
+    }
+}
+[2024-06-29 05:48:44,607-rk0-model_load.py# 44] load pretrained model from C:\Users\LenovoPC\Desktop\SiamTrackers-master\NanoTrack\bin\.././models/pretrained/mobilenetv3_small_1.0.pth
+[2024-06-29 05:48:44,607-rk0-model_load.py# 39] remove prefix 'module.'
+[2024-06-29 05:48:44,607-rk0-model_load.py# 27] [Warning] unused_pretrained_keys: {'conv.1.weight', 'features.9.conv.7.weight', 'features.9.conv.3.weight', 'features.10.conv.8.num_batches_tracked', 'features.9.conv.8.bias', 'features.11.conv.1.running_var', 'features.9.conv.0.weight', 'features.9.conv.4.running_mean', 'features.10.conv.8.running_mean', 'features.9.conv.1.num_batches_tracked', 'features.11.conv.3.weight', 'features.11.conv.8.weight', 'features.11.conv.8.running_mean', 'features.11.conv.8.running_var', 'features.10.conv.5.fc.2.bias', 'features.10.conv.1.weight', 'features.10.conv.1.bias', 'features.11.conv.0.weight', 'features.11.conv.1.num_batches_tracked', 'features.9.conv.8.num_batches_tracked', 'features.11.conv.4.bias', 'features.9.conv.8.running_mean', 'features.10.conv.1.running_var', 'features.10.conv.0.weight', 'features.11.conv.1.running_mean', 'features.10.conv.8.bias', 'features.10.conv.8.weight', 'features.10.conv.8.running_var', 'features.11.conv.1.weight', 'classifier.3.weight', 'conv.1.num_batches_tracked', 'features.11.conv.8.bias', 'classifier.3.bias', 'features.11.conv.4.num_batches_tracked', 'features.10.conv.4.bias', 'features.10.conv.5.fc.2.weight', 'features.11.conv.4.running_mean', 'classifier.0.bias', 'features.10.conv.1.running_mean', 'features.9.conv.1.bias', 'features.10.conv.7.weight', 'features.10.conv.4.num_batches_tracked', 'features.9.conv.4.num_batches_tracked', 'features.9.conv.5.fc.2.weight', 'features.10.conv.1.num_batches_tracked', 'features.11.conv.8.num_batches_tracked', 'conv.1.running_mean', 'features.10.conv.5.fc.0.bias', 'features.9.conv.8.weight', 'features.11.conv.1.bias', 'features.10.conv.4.weight', 'features.11.conv.5.fc.2.bias', 'features.11.conv.4.weight', 'conv.0.weight', 'classifier.0.weight', 'features.10.conv.4.running_mean', 'features.9.conv.5.fc.0.bias', 'features.11.conv.4.running_var', 'conv.1.bias', 'conv.1.running_var', 'features.11.conv.5.fc.0.weight', 'features.10.conv.4.running_var', 'features.9.conv.4.running_var', 'features.9.conv.1.running_var', 'features.11.conv.7.weight', 'features.10.conv.3.weight', 'features.11.conv.5.fc.0.bias', 'features.9.conv.4.bias', 'features.11.conv.5.fc.2.weight', 'features.9.conv.1.running_mean', 'features.10.conv.5.fc.0.weight', 'features.9.conv.5.fc.2.bias', 'features.9.conv.8.running_var', 'features.9.conv.4.weight', 'features.9.conv.5.fc.0.weight', 'features.9.conv.1.weight'}
+[2024-06-29 05:48:44,607-rk0-model_load.py# 29] unused checkpoint keys:76
+[2024-06-29 05:48:44,607-rk0-model_load.py# 31] used keys:168
+[2024-06-29 05:48:44,622-rk0-train.py# 56] build train dataset
+[2024-06-29 05:48:44,622-rk0-dataset.py# 39] loading GOT
+[2024-06-29 05:50:30,814-rk0-train.py#262] Version Information: 
+commit : 
+  log  : 
+
+[2024-06-29 05:50:30,814-rk0-train.py#263] config 
+{
+    "META_ARC": "nanotrack",
+    "CUDA": true,
+    "TRAIN": {
+        "NEG_NUM": 16,
+        "POS_NUM": 16,
+        "TOTAL_NUM": 64,
+        "EXEMPLAR_SIZE": 127,
+        "SEARCH_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "RESUME": "",
+        "PRETRAINED": "",
+        "LOG_DIR": "./logs",
+        "SNAPSHOT_DIR": "./models/snapshot",
+        "EPOCH": 50,
+        "START_EPOCH": 0,
+        "NUM_CONVS": 4,
+        "BATCH_SIZE": 32,
+        "NUM_WORKERS": 8,
+        "MOMENTUM": 0.9,
+        "WEIGHT_DECAY": 0.0001,
+        "CLS_WEIGHT": 1.0,
+        "LOC_WEIGHT": 1.0,
+        "PRINT_FREQ": 20,
+        "LOG_GRADS": false,
+        "GRAD_CLIP": 10.0,
+        "BASE_LR": 0.005,
+        "LR": {
+            "TYPE": "log",
+            "KWARGS": {
+                "start_lr": 0.005,
+                "end_lr": 0.0005
+            }
+        },
+        "LR_WARMUP": {
+            "WARMUP": true,
+            "TYPE": "step",
+            "EPOCH": 5,
+            "KWARGS": {
+                "start_lr": 0.001,
+                "end_lr": 0.005,
+                "step": 1
+            }
+        }
+    },
+    "MASK": {
+        "MASK": false
+    },
+    "DATASET": {
+        "TEMPLATE": {
+            "SHIFT": 4,
+            "SCALE": 0.05,
+            "BLUR": 0.0,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "SEARCH": {
+            "SHIFT": 64,
+            "SCALE": 0.18,
+            "BLUR": 0.2,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "NEG": 0.2,
+        "GRAY": 0.0,
+        "NAMES": [
+            "GOT"
+        ],
+        "VID": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "YOUTUBEBB": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 3,
+            "NUM_USE": 100000
+        },
+        "COCO": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "DET": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "GOT": {
+            "ROOT": "data/GOT-10k/crop511",
+            "ANNO": "data/GOT-10k/train.json",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "LASOT": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "VIDEOS_PER_EPOCH": 100000
+    },
+    "BACKBONE": {
+        "TYPE": "mobilenetv3_small",
+        "KWARGS": {
+            "used_layers": [
+                4
+            ]
+        },
+        "PRETRAINED": "./models/pretrained/mobilenetv3_small_1.0.pth",
+        "TRAIN_LAYERS": [
+            "features"
+        ],
+        "LAYERS_LR": 0.1,
+        "TRAIN_EPOCH": 10
+    },
+    "ADJUST": {
+        "ADJUST": true,
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        },
+        "TYPE": "AdjustLayer"
+    },
+    "BAN": {
+        "BAN": true,
+        "TYPE": "DepthwiseBAN",
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        }
+    },
+    "POINT": {
+        "STRIDE": 16
+    },
+    "TRACK": {
+        "TYPE": "NanoTracker",
+        "PENALTY_K": 0.148,
+        "WINDOW_INFLUENCE": 0.462,
+        "LR": 0.39,
+        "EXEMPLAR_SIZE": 127,
+        "INSTANCE_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "CONTEXT_AMOUNT": 0.5
+    }
+}
+[2024-06-29 05:50:30,941-rk0-model_load.py# 44] load pretrained model from C:\Users\LenovoPC\Desktop\SiamTrackers-master\NanoTrack\bin\.././models/pretrained/mobilenetv3_small_1.0.pth
+[2024-06-29 05:50:30,947-rk0-model_load.py# 39] remove prefix 'module.'
+[2024-06-29 05:50:30,947-rk0-model_load.py# 27] [Warning] unused_pretrained_keys: {'features.9.conv.4.weight', 'features.10.conv.5.fc.2.bias', 'features.10.conv.4.num_batches_tracked', 'features.11.conv.5.fc.2.weight', 'features.10.conv.8.running_mean', 'features.10.conv.4.bias', 'features.11.conv.4.running_var', 'features.9.conv.8.running_var', 'features.10.conv.1.running_mean', 'features.11.conv.8.bias', 'features.11.conv.4.bias', 'features.9.conv.4.num_batches_tracked', 'features.11.conv.8.running_var', 'features.9.conv.5.fc.2.weight', 'features.9.conv.5.fc.2.bias', 'features.9.conv.5.fc.0.weight', 'features.11.conv.8.weight', 'features.11.conv.3.weight', 'features.11.conv.4.num_batches_tracked', 'features.11.conv.4.running_mean', 'features.11.conv.7.weight', 'features.10.conv.4.running_var', 'features.11.conv.1.bias', 'features.10.conv.1.running_var', 'conv.0.weight', 'features.9.conv.8.bias', 'conv.1.running_mean', 'features.9.conv.8.running_mean', 'features.11.conv.5.fc.0.weight', 'features.9.conv.1.num_batches_tracked', 'features.10.conv.8.num_batches_tracked', 'features.11.conv.1.num_batches_tracked', 'features.9.conv.4.running_var', 'features.9.conv.4.running_mean', 'features.10.conv.5.fc.0.weight', 'features.10.conv.5.fc.0.bias', 'features.10.conv.8.bias', 'features.11.conv.4.weight', 'features.11.conv.8.num_batches_tracked', 'classifier.0.weight', 'classifier.0.bias', 'features.10.conv.4.running_mean', 'features.11.conv.5.fc.0.bias', 'features.9.conv.7.weight', 'features.10.conv.7.weight', 'features.9.conv.1.running_var', 'features.9.conv.1.bias', 'features.10.conv.5.fc.2.weight', 'conv.1.num_batches_tracked', 'conv.1.running_var', 'features.10.conv.3.weight', 'features.9.conv.0.weight', 'features.9.conv.1.weight', 'features.11.conv.0.weight', 'classifier.3.bias', 'features.10.conv.0.weight', 'features.11.conv.5.fc.2.bias', 'features.10.conv.8.weight', 'features.11.conv.8.running_mean', 'features.9.conv.5.fc.0.bias', 'features.10.conv.4.weight', 'features.9.conv.3.weight', 'features.9.conv.1.running_mean', 'features.9.conv.4.bias', 'features.10.conv.1.weight', 'classifier.3.weight', 'conv.1.weight', 'conv.1.bias', 'features.11.conv.1.weight', 'features.10.conv.8.running_var', 'features.9.conv.8.num_batches_tracked', 'features.11.conv.1.running_mean', 'features.9.conv.8.weight', 'features.10.conv.1.num_batches_tracked', 'features.11.conv.1.running_var', 'features.10.conv.1.bias'}
+[2024-06-29 05:50:30,947-rk0-model_load.py# 29] unused checkpoint keys:76
+[2024-06-29 05:50:30,947-rk0-model_load.py# 31] used keys:168
+[2024-06-29 05:50:30,956-rk0-train.py# 56] build train dataset
+[2024-06-29 05:50:30,956-rk0-dataset.py# 39] loading GOT
+[2024-06-29 06:18:49,681-rk0-train.py#262] Version Information: 
+commit : 
+  log  : 
+
+[2024-06-29 06:18:49,681-rk0-train.py#263] config 
+{
+    "META_ARC": "nanotrack",
+    "CUDA": true,
+    "TRAIN": {
+        "NEG_NUM": 16,
+        "POS_NUM": 16,
+        "TOTAL_NUM": 64,
+        "EXEMPLAR_SIZE": 127,
+        "SEARCH_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "RESUME": "",
+        "PRETRAINED": "",
+        "LOG_DIR": "./logs",
+        "SNAPSHOT_DIR": "./models/snapshot",
+        "EPOCH": 50,
+        "START_EPOCH": 0,
+        "NUM_CONVS": 4,
+        "BATCH_SIZE": 32,
+        "NUM_WORKERS": 8,
+        "MOMENTUM": 0.9,
+        "WEIGHT_DECAY": 0.0001,
+        "CLS_WEIGHT": 1.0,
+        "LOC_WEIGHT": 1.0,
+        "PRINT_FREQ": 20,
+        "LOG_GRADS": false,
+        "GRAD_CLIP": 10.0,
+        "BASE_LR": 0.005,
+        "LR": {
+            "TYPE": "log",
+            "KWARGS": {
+                "start_lr": 0.005,
+                "end_lr": 0.0005
+            }
+        },
+        "LR_WARMUP": {
+            "WARMUP": true,
+            "TYPE": "step",
+            "EPOCH": 5,
+            "KWARGS": {
+                "start_lr": 0.001,
+                "end_lr": 0.005,
+                "step": 1
+            }
+        }
+    },
+    "MASK": {
+        "MASK": false
+    },
+    "DATASET": {
+        "TEMPLATE": {
+            "SHIFT": 4,
+            "SCALE": 0.05,
+            "BLUR": 0.0,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "SEARCH": {
+            "SHIFT": 64,
+            "SCALE": 0.18,
+            "BLUR": 0.2,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "NEG": 0.2,
+        "GRAY": 0.0,
+        "NAMES": [
+            "GOT"
+        ],
+        "VID": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "YOUTUBEBB": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 3,
+            "NUM_USE": 100000
+        },
+        "COCO": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "DET": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "GOT": {
+            "ROOT": "data/GOT-10k/crop511",
+            "ANNO": "data/GOT-10k/train.json",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "LASOT": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "VIDEOS_PER_EPOCH": 100000
+    },
+    "BACKBONE": {
+        "TYPE": "mobilenetv3_small",
+        "KWARGS": {
+            "used_layers": [
+                4
+            ]
+        },
+        "PRETRAINED": "./models/pretrained/mobilenetv3_small_1.0.pth",
+        "TRAIN_LAYERS": [
+            "features"
+        ],
+        "LAYERS_LR": 0.1,
+        "TRAIN_EPOCH": 10
+    },
+    "ADJUST": {
+        "ADJUST": true,
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        },
+        "TYPE": "AdjustLayer"
+    },
+    "BAN": {
+        "BAN": true,
+        "TYPE": "DepthwiseBAN",
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        }
+    },
+    "POINT": {
+        "STRIDE": 16
+    },
+    "TRACK": {
+        "TYPE": "NanoTracker",
+        "PENALTY_K": 0.148,
+        "WINDOW_INFLUENCE": 0.462,
+        "LR": 0.39,
+        "EXEMPLAR_SIZE": 127,
+        "INSTANCE_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "CONTEXT_AMOUNT": 0.5
+    }
+}
+[2024-06-29 06:18:49,792-rk0-model_load.py# 44] load pretrained model from C:\Users\LenovoPC\Desktop\SiamTrackers-master\NanoTrack\bin\.././models/pretrained/mobilenetv3_small_1.0.pth
+[2024-06-29 06:18:49,800-rk0-model_load.py# 39] remove prefix 'module.'
+[2024-06-29 06:18:49,800-rk0-model_load.py# 27] [Warning] unused_pretrained_keys: {'features.11.conv.4.weight', 'classifier.0.weight', 'features.9.conv.8.bias', 'conv.1.running_var', 'features.10.conv.4.weight', 'classifier.0.bias', 'features.11.conv.5.fc.2.weight', 'features.10.conv.4.bias', 'features.10.conv.4.running_var', 'features.9.conv.1.bias', 'features.10.conv.8.running_var', 'features.11.conv.4.running_var', 'features.11.conv.4.running_mean', 'features.9.conv.5.fc.2.bias', 'features.10.conv.8.weight', 'conv.1.bias', 'features.9.conv.5.fc.0.weight', 'features.10.conv.0.weight', 'features.10.conv.8.num_batches_tracked', 'features.10.conv.4.running_mean', 'features.9.conv.1.weight', 'features.11.conv.1.weight', 'features.10.conv.7.weight', 'features.11.conv.5.fc.2.bias', 'classifier.3.bias', 'features.9.conv.3.weight', 'features.10.conv.1.running_var', 'features.10.conv.5.fc.0.weight', 'features.9.conv.0.weight', 'features.9.conv.8.num_batches_tracked', 'features.9.conv.8.weight', 'features.11.conv.8.running_var', 'conv.1.running_mean', 'features.10.conv.8.bias', 'conv.1.weight', 'features.11.conv.4.num_batches_tracked', 'features.9.conv.1.running_var', 'features.11.conv.7.weight', 'features.10.conv.1.running_mean', 'features.9.conv.5.fc.2.weight', 'features.10.conv.5.fc.2.weight', 'features.11.conv.1.running_mean', 'features.10.conv.5.fc.2.bias', 'features.10.conv.1.num_batches_tracked', 'features.9.conv.4.running_var', 'features.10.conv.1.bias', 'features.9.conv.4.running_mean', 'features.11.conv.0.weight', 'features.11.conv.5.fc.0.bias', 'features.9.conv.8.running_mean', 'features.11.conv.5.fc.0.weight', 'features.11.conv.8.running_mean', 'features.9.conv.7.weight', 'features.10.conv.8.running_mean', 'conv.0.weight', 'conv.1.num_batches_tracked', 'features.9.conv.4.bias', 'features.11.conv.8.bias', 'features.9.conv.4.num_batches_tracked', 'features.10.conv.1.weight', 'features.11.conv.4.bias', 'features.9.conv.1.num_batches_tracked', 'features.10.conv.5.fc.0.bias', 'features.9.conv.8.running_var', 'features.9.conv.5.fc.0.bias', 'features.10.conv.4.num_batches_tracked', 'features.11.conv.3.weight', 'features.10.conv.3.weight', 'features.11.conv.1.bias', 'classifier.3.weight', 'features.11.conv.8.num_batches_tracked', 'features.11.conv.1.running_var', 'features.11.conv.1.num_batches_tracked', 'features.9.conv.1.running_mean', 'features.11.conv.8.weight', 'features.9.conv.4.weight'}
+[2024-06-29 06:18:49,800-rk0-model_load.py# 29] unused checkpoint keys:76
+[2024-06-29 06:18:49,800-rk0-model_load.py# 31] used keys:168
+[2024-06-29 06:18:49,811-rk0-train.py# 56] build train dataset
+[2024-06-29 06:18:49,811-rk0-dataset.py# 39] loading GOT
+[2024-06-29 06:18:52,006-rk0-dataset.py# 64] GOT loaded
+[2024-06-29 06:18:52,007-rk0-dataset.py# 91] GOT start-index 0 select [100000/9335] path_format {}.{}.{}.jpg
+[2024-06-29 06:18:52,126-rk0-dataset.py#204] shuffle done!
+[2024-06-29 06:18:52,126-rk0-dataset.py#205] dataset length 5000000
+[2024-06-29 06:18:52,140-rk0-train.py# 60] build dataset done
+[2024-06-29 06:18:52,148-rk0-train.py#293] (WarmUPScheduler) lr spaces: 
+[0.001      0.00137973 0.00190365 0.00262653 0.0036239  0.005
+ 0.00474507 0.00450314 0.00427354 0.00405565 0.00384887 0.00365264
+ 0.0034664  0.00328967 0.00312194 0.00296277 0.00281171 0.00266835
+ 0.0025323  0.00240319 0.00228066 0.00216438 0.00205403 0.0019493
+ 0.00184992 0.0017556  0.00166609 0.00158114 0.00150052 0.00142402
+ 0.00135141 0.00128251 0.00121712 0.00115506 0.00109617 0.00104028
+ 0.00098724 0.00093691 0.00088914 0.00084381 0.00080078 0.00075996
+ 0.00072121 0.00068444 0.00064954 0.00061642 0.00058499 0.00055517
+ 0.00052686 0.0005    ]
+[2024-06-29 06:18:52,148-rk0-train.py#294] model prepare done
+[2024-06-29 06:18:52,148-rk0-train.py#163] model
+.[31mbackbone[0m (MobileNetV3)
+         .[31mfeatures[0m (Sequential)
+                  .[31m0[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - weight
+                    .1 (BatchNorm2d)
+                      - weight
+                      - bias
+                    .[31m2[0m (h_swish)
+                      .[31mhard_swish[0m (Hardswish)
+                  .[31m1[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m4[0m (Conv2d)
+                           - weight
+                         .5 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m2[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m3[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m4[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m5[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m6[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m7[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m8[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+.[31mneck[0m (AdjustLayer)
+     .[31mdownsample[0m (Sequential)
+                .[31m0[0m (Conv2d)
+                  - [31mweight[0m
+                .[31m1[0m (BatchNorm2d)
+                  - [31mweight[0m
+                  - [31mbias[0m
+.[31mban_head[0m (DepthwiseBAN)
+         .[31mcorr_dw_reg[0m (DepthwiseXCorr)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+         .[31mcorr_pw_reg[0m (PixelwiseXCorr)
+                     .[31mCA_layer[0m (CAModule)
+                              .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                              .[31mfc1[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31mrelu[0m (ReLU)
+                              .[31mfc2[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31msigmoid[0m (Sigmoid)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv[0m (Sequential)
+                          .[31m0[0m (Conv2d)
+                            - [31mweight[0m
+                          .[31m1[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m2[0m (ReLU6)
+                          .[31m3[0m (Conv2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m4[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+         .[31mcorr_dw_cls[0m (DepthwiseXCorr)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+         .[31mcorr_pw_cls[0m (PixelwiseXCorr)
+                     .[31mCA_layer[0m (CAModule)
+                              .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                              .[31mfc1[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31mrelu[0m (ReLU)
+                              .[31mfc2[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31msigmoid[0m (Sigmoid)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv[0m (Sequential)
+                          .[31m0[0m (Conv2d)
+                            - [31mweight[0m
+                          .[31m1[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m2[0m (ReLU6)
+                          .[31m3[0m (Conv2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m4[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+         .[31mcls_tower[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m1[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m2[0m (ReLU6)
+                   .[31m3[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m4[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m5[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m6[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m7[0m (ReLU6)
+                   .[31m8[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m9[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m10[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m11[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m12[0m (ReLU6)
+                   .[31m13[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m14[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m15[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m16[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m17[0m (ReLU6)
+                   .[31m18[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m19[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m20[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m21[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m22[0m (ReLU6)
+                   .[31m23[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m24[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m25[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m26[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m27[0m (ReLU6)
+                   .[31m28[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m29[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+         .[31mbbox_tower[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m1[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m2[0m (ReLU6)
+                    .[31m3[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m4[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m5[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m6[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m7[0m (ReLU6)
+                    .[31m8[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m9[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m10[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m11[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m12[0m (ReLU6)
+                    .[31m13[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m14[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m15[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m16[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m17[0m (ReLU6)
+                    .[31m18[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m19[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m20[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m21[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m22[0m (ReLU6)
+                    .[31m23[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m24[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m25[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m26[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m27[0m (ReLU6)
+                    .[31m28[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m29[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+         .[31mcls_logits[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+         .[31mbbox_pred[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+         .[31mdown_reg[0m (Sequential)
+                  .[31m0[0m (Conv2d)
+                    - [31mweight[0m
+                    - [31mbias[0m
+         .[31mdown_cls[0m (Sequential)
+                  .[31m0[0m (Conv2d)
+                    - [31mweight[0m
+                    - [31mbias[0m
+[2024-06-29 06:30:52,723-rk0-train.py#262] Version Information: 
+commit : 
+  log  : 
+
+[2024-06-29 06:30:52,724-rk0-train.py#263] config 
+{
+    "META_ARC": "nanotrack",
+    "CUDA": true,
+    "TRAIN": {
+        "NEG_NUM": 16,
+        "POS_NUM": 16,
+        "TOTAL_NUM": 64,
+        "EXEMPLAR_SIZE": 127,
+        "SEARCH_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "RESUME": "",
+        "PRETRAINED": "",
+        "LOG_DIR": "./logs",
+        "SNAPSHOT_DIR": "./models/snapshot",
+        "EPOCH": 50,
+        "START_EPOCH": 0,
+        "NUM_CONVS": 4,
+        "BATCH_SIZE": 32,
+        "NUM_WORKERS": 8,
+        "MOMENTUM": 0.9,
+        "WEIGHT_DECAY": 0.0001,
+        "CLS_WEIGHT": 1.0,
+        "LOC_WEIGHT": 1.0,
+        "PRINT_FREQ": 20,
+        "LOG_GRADS": false,
+        "GRAD_CLIP": 10.0,
+        "BASE_LR": 0.005,
+        "LR": {
+            "TYPE": "log",
+            "KWARGS": {
+                "start_lr": 0.005,
+                "end_lr": 0.0005
+            }
+        },
+        "LR_WARMUP": {
+            "WARMUP": true,
+            "TYPE": "step",
+            "EPOCH": 5,
+            "KWARGS": {
+                "start_lr": 0.001,
+                "end_lr": 0.005,
+                "step": 1
+            }
+        }
+    },
+    "MASK": {
+        "MASK": false
+    },
+    "DATASET": {
+        "TEMPLATE": {
+            "SHIFT": 4,
+            "SCALE": 0.05,
+            "BLUR": 0.0,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "SEARCH": {
+            "SHIFT": 64,
+            "SCALE": 0.18,
+            "BLUR": 0.2,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "NEG": 0.2,
+        "GRAY": 0.0,
+        "NAMES": [
+            "GOT"
+        ],
+        "VID": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "YOUTUBEBB": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 3,
+            "NUM_USE": 100000
+        },
+        "COCO": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "DET": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "GOT": {
+            "ROOT": "data/GOT-10k/crop511",
+            "ANNO": "data/GOT-10k/train.json",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "LASOT": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "VIDEOS_PER_EPOCH": 100000
+    },
+    "BACKBONE": {
+        "TYPE": "mobilenetv3_small",
+        "KWARGS": {
+            "used_layers": [
+                4
+            ]
+        },
+        "PRETRAINED": "./models/pretrained/mobilenetv3_small_1.0.pth",
+        "TRAIN_LAYERS": [
+            "features"
+        ],
+        "LAYERS_LR": 0.1,
+        "TRAIN_EPOCH": 10
+    },
+    "ADJUST": {
+        "ADJUST": true,
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        },
+        "TYPE": "AdjustLayer"
+    },
+    "BAN": {
+        "BAN": true,
+        "TYPE": "DepthwiseBAN",
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        }
+    },
+    "POINT": {
+        "STRIDE": 16
+    },
+    "TRACK": {
+        "TYPE": "NanoTracker",
+        "PENALTY_K": 0.148,
+        "WINDOW_INFLUENCE": 0.462,
+        "LR": 0.39,
+        "EXEMPLAR_SIZE": 127,
+        "INSTANCE_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "CONTEXT_AMOUNT": 0.5
+    }
+}
+[2024-06-29 06:30:52,841-rk0-model_load.py# 44] load pretrained model from C:\Users\LenovoPC\Desktop\SiamTrackers-master\NanoTrack\bin\.././models/pretrained/mobilenetv3_small_1.0.pth
+[2024-06-29 06:30:52,844-rk0-model_load.py# 39] remove prefix 'module.'
+[2024-06-29 06:30:52,844-rk0-model_load.py# 27] [Warning] unused_pretrained_keys: {'features.11.conv.3.weight', 'features.10.conv.1.weight', 'features.9.conv.8.running_mean', 'features.9.conv.8.num_batches_tracked', 'features.11.conv.4.running_var', 'conv.0.weight', 'features.9.conv.4.weight', 'features.11.conv.1.running_mean', 'features.9.conv.4.running_mean', 'features.10.conv.1.running_var', 'features.10.conv.1.num_batches_tracked', 'features.11.conv.4.weight', 'features.11.conv.4.bias', 'features.10.conv.5.fc.2.bias', 'features.11.conv.7.weight', 'features.9.conv.4.running_var', 'features.11.conv.8.weight', 'features.9.conv.7.weight', 'features.10.conv.8.num_batches_tracked', 'conv.1.weight', 'features.9.conv.1.running_mean', 'classifier.3.bias', 'features.9.conv.1.weight', 'features.11.conv.1.running_var', 'features.10.conv.7.weight', 'features.11.conv.8.running_var', 'features.11.conv.8.running_mean', 'conv.1.running_mean', 'features.10.conv.8.weight', 'features.11.conv.1.bias', 'features.10.conv.5.fc.0.bias', 'features.9.conv.4.num_batches_tracked', 'classifier.0.weight', 'features.10.conv.8.running_mean', 'features.10.conv.4.running_var', 'conv.1.running_var', 'conv.1.num_batches_tracked', 'features.11.conv.5.fc.2.weight', 'features.9.conv.5.fc.2.bias', 'features.10.conv.4.weight', 'features.10.conv.4.bias', 'features.10.conv.1.bias', 'features.11.conv.0.weight', 'features.11.conv.1.num_batches_tracked', 'conv.1.bias', 'features.9.conv.4.bias', 'features.9.conv.5.fc.0.weight', 'features.9.conv.0.weight', 'features.11.conv.8.num_batches_tracked', 'features.9.conv.1.running_var', 'features.10.conv.1.running_mean', 'features.9.conv.5.fc.0.bias', 'features.11.conv.5.fc.0.weight', 'features.10.conv.5.fc.2.weight', 'features.11.conv.4.running_mean', 'features.9.conv.1.num_batches_tracked', 'features.11.conv.8.bias', 'features.10.conv.4.running_mean', 'features.10.conv.3.weight', 'features.10.conv.8.bias', 'features.11.conv.5.fc.2.bias', 'features.11.conv.1.weight', 'features.9.conv.8.weight', 'features.9.conv.3.weight', 'classifier.3.weight', 'features.9.conv.5.fc.2.weight', 'classifier.0.bias', 'features.10.conv.0.weight', 'features.9.conv.1.bias', 'features.9.conv.8.bias', 'features.9.conv.8.running_var', 'features.10.conv.8.running_var', 'features.10.conv.5.fc.0.weight', 'features.10.conv.4.num_batches_tracked', 'features.11.conv.4.num_batches_tracked', 'features.11.conv.5.fc.0.bias'}
+[2024-06-29 06:30:52,844-rk0-model_load.py# 29] unused checkpoint keys:76
+[2024-06-29 06:30:52,844-rk0-model_load.py# 31] used keys:168
+[2024-06-29 06:30:52,844-rk0-train.py# 56] build train dataset
+[2024-06-29 06:30:52,844-rk0-dataset.py# 39] loading GOT
+[2024-06-29 06:30:55,016-rk0-dataset.py# 64] GOT loaded
+[2024-06-29 06:30:55,016-rk0-dataset.py# 91] GOT start-index 0 select [100000/9335] path_format {}.{}.{}.jpg
+[2024-06-29 06:30:55,140-rk0-dataset.py#204] shuffle done!
+[2024-06-29 06:30:55,140-rk0-dataset.py#205] dataset length 5000000
+[2024-06-29 06:30:55,158-rk0-train.py# 60] build dataset done
+[2024-06-29 06:30:55,158-rk0-train.py#293] (WarmUPScheduler) lr spaces: 
+[0.001      0.00137973 0.00190365 0.00262653 0.0036239  0.005
+ 0.00474507 0.00450314 0.00427354 0.00405565 0.00384887 0.00365264
+ 0.0034664  0.00328967 0.00312194 0.00296277 0.00281171 0.00266835
+ 0.0025323  0.00240319 0.00228066 0.00216438 0.00205403 0.0019493
+ 0.00184992 0.0017556  0.00166609 0.00158114 0.00150052 0.00142402
+ 0.00135141 0.00128251 0.00121712 0.00115506 0.00109617 0.00104028
+ 0.00098724 0.00093691 0.00088914 0.00084381 0.00080078 0.00075996
+ 0.00072121 0.00068444 0.00064954 0.00061642 0.00058499 0.00055517
+ 0.00052686 0.0005    ]
+[2024-06-29 06:30:55,158-rk0-train.py#294] model prepare done
+[2024-06-29 06:30:55,158-rk0-train.py#163] model
+.[31mbackbone[0m (MobileNetV3)
+         .[31mfeatures[0m (Sequential)
+                  .[31m0[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - weight
+                    .1 (BatchNorm2d)
+                      - weight
+                      - bias
+                    .[31m2[0m (h_swish)
+                      .[31mhard_swish[0m (Hardswish)
+                  .[31m1[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m4[0m (Conv2d)
+                           - weight
+                         .5 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m2[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m3[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m4[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m5[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m6[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m7[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m8[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+.[31mneck[0m (AdjustLayer)
+     .[31mdownsample[0m (Sequential)
+                .[31m0[0m (Conv2d)
+                  - [31mweight[0m
+                .[31m1[0m (BatchNorm2d)
+                  - [31mweight[0m
+                  - [31mbias[0m
+.[31mban_head[0m (DepthwiseBAN)
+         .[31mcorr_dw_reg[0m (DepthwiseXCorr)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+         .[31mcorr_pw_reg[0m (PixelwiseXCorr)
+                     .[31mCA_layer[0m (CAModule)
+                              .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                              .[31mfc1[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31mrelu[0m (ReLU)
+                              .[31mfc2[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31msigmoid[0m (Sigmoid)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv[0m (Sequential)
+                          .[31m0[0m (Conv2d)
+                            - [31mweight[0m
+                          .[31m1[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m2[0m (ReLU6)
+                          .[31m3[0m (Conv2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m4[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+         .[31mcorr_dw_cls[0m (DepthwiseXCorr)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+         .[31mcorr_pw_cls[0m (PixelwiseXCorr)
+                     .[31mCA_layer[0m (CAModule)
+                              .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                              .[31mfc1[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31mrelu[0m (ReLU)
+                              .[31mfc2[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31msigmoid[0m (Sigmoid)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv[0m (Sequential)
+                          .[31m0[0m (Conv2d)
+                            - [31mweight[0m
+                          .[31m1[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m2[0m (ReLU6)
+                          .[31m3[0m (Conv2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m4[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+         .[31mcls_tower[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m1[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m2[0m (ReLU6)
+                   .[31m3[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m4[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m5[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m6[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m7[0m (ReLU6)
+                   .[31m8[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m9[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m10[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m11[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m12[0m (ReLU6)
+                   .[31m13[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m14[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m15[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m16[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m17[0m (ReLU6)
+                   .[31m18[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m19[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m20[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m21[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m22[0m (ReLU6)
+                   .[31m23[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m24[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m25[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m26[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m27[0m (ReLU6)
+                   .[31m28[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m29[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+         .[31mbbox_tower[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m1[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m2[0m (ReLU6)
+                    .[31m3[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m4[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m5[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m6[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m7[0m (ReLU6)
+                    .[31m8[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m9[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m10[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m11[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m12[0m (ReLU6)
+                    .[31m13[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m14[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m15[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m16[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m17[0m (ReLU6)
+                    .[31m18[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m19[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m20[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m21[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m22[0m (ReLU6)
+                    .[31m23[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m24[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m25[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m26[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m27[0m (ReLU6)
+                    .[31m28[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m29[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+         .[31mcls_logits[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+         .[31mbbox_pred[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+         .[31mdown_reg[0m (Sequential)
+                  .[31m0[0m (Conv2d)
+                    - [31mweight[0m
+                    - [31mbias[0m
+         .[31mdown_cls[0m (Sequential)
+                  .[31m0[0m (Conv2d)
+                    - [31mweight[0m
+                    - [31mbias[0m
+[2024-06-29 06:32:45,941-rk0-train.py#263] Version Information: 
+commit : 
+  log  : 
+
+[2024-06-29 06:32:45,941-rk0-train.py#264] config 
+{
+    "META_ARC": "nanotrack",
+    "CUDA": true,
+    "TRAIN": {
+        "NEG_NUM": 16,
+        "POS_NUM": 16,
+        "TOTAL_NUM": 64,
+        "EXEMPLAR_SIZE": 127,
+        "SEARCH_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "RESUME": "",
+        "PRETRAINED": "",
+        "LOG_DIR": "./logs",
+        "SNAPSHOT_DIR": "./models/snapshot",
+        "EPOCH": 50,
+        "START_EPOCH": 0,
+        "NUM_CONVS": 4,
+        "BATCH_SIZE": 32,
+        "NUM_WORKERS": 8,
+        "MOMENTUM": 0.9,
+        "WEIGHT_DECAY": 0.0001,
+        "CLS_WEIGHT": 1.0,
+        "LOC_WEIGHT": 1.0,
+        "PRINT_FREQ": 20,
+        "LOG_GRADS": false,
+        "GRAD_CLIP": 10.0,
+        "BASE_LR": 0.005,
+        "LR": {
+            "TYPE": "log",
+            "KWARGS": {
+                "start_lr": 0.005,
+                "end_lr": 0.0005
+            }
+        },
+        "LR_WARMUP": {
+            "WARMUP": true,
+            "TYPE": "step",
+            "EPOCH": 5,
+            "KWARGS": {
+                "start_lr": 0.001,
+                "end_lr": 0.005,
+                "step": 1
+            }
+        }
+    },
+    "MASK": {
+        "MASK": false
+    },
+    "DATASET": {
+        "TEMPLATE": {
+            "SHIFT": 4,
+            "SCALE": 0.05,
+            "BLUR": 0.0,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "SEARCH": {
+            "SHIFT": 64,
+            "SCALE": 0.18,
+            "BLUR": 0.2,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "NEG": 0.2,
+        "GRAY": 0.0,
+        "NAMES": [
+            "GOT"
+        ],
+        "VID": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "YOUTUBEBB": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 3,
+            "NUM_USE": 100000
+        },
+        "COCO": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "DET": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "GOT": {
+            "ROOT": "data/GOT-10k/crop511",
+            "ANNO": "data/GOT-10k/train.json",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "LASOT": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "VIDEOS_PER_EPOCH": 100000
+    },
+    "BACKBONE": {
+        "TYPE": "mobilenetv3_small",
+        "KWARGS": {
+            "used_layers": [
+                4
+            ]
+        },
+        "PRETRAINED": "./models/pretrained/mobilenetv3_small_1.0.pth",
+        "TRAIN_LAYERS": [
+            "features"
+        ],
+        "LAYERS_LR": 0.1,
+        "TRAIN_EPOCH": 10
+    },
+    "ADJUST": {
+        "ADJUST": true,
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        },
+        "TYPE": "AdjustLayer"
+    },
+    "BAN": {
+        "BAN": true,
+        "TYPE": "DepthwiseBAN",
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        }
+    },
+    "POINT": {
+        "STRIDE": 16
+    },
+    "TRACK": {
+        "TYPE": "NanoTracker",
+        "PENALTY_K": 0.148,
+        "WINDOW_INFLUENCE": 0.462,
+        "LR": 0.39,
+        "EXEMPLAR_SIZE": 127,
+        "INSTANCE_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "CONTEXT_AMOUNT": 0.5
+    }
+}
+[2024-06-29 06:32:46,034-rk0-model_load.py# 44] load pretrained model from C:\Users\LenovoPC\Desktop\SiamTrackers-master\NanoTrack\bin\.././models/pretrained/mobilenetv3_small_1.0.pth
+[2024-06-29 06:32:46,040-rk0-model_load.py# 39] remove prefix 'module.'
+[2024-06-29 06:32:46,040-rk0-model_load.py# 27] [Warning] unused_pretrained_keys: {'features.11.conv.4.running_mean', 'features.10.conv.4.running_var', 'classifier.3.weight', 'features.10.conv.5.fc.0.weight', 'features.10.conv.4.bias', 'features.11.conv.8.bias', 'features.10.conv.4.running_mean', 'features.10.conv.5.fc.0.bias', 'features.9.conv.5.fc.0.bias', 'features.10.conv.1.num_batches_tracked', 'features.9.conv.4.bias', 'conv.1.num_batches_tracked', 'features.10.conv.8.weight', 'classifier.0.bias', 'features.9.conv.7.weight', 'features.9.conv.8.running_mean', 'features.11.conv.7.weight', 'features.9.conv.8.bias', 'features.9.conv.3.weight', 'features.11.conv.4.running_var', 'features.11.conv.5.fc.0.weight', 'features.11.conv.8.weight', 'classifier.3.bias', 'features.11.conv.1.running_var', 'features.10.conv.8.running_var', 'features.9.conv.1.running_mean', 'features.10.conv.1.running_mean', 'features.11.conv.1.running_mean', 'features.11.conv.3.weight', 'features.9.conv.1.weight', 'features.10.conv.8.bias', 'features.9.conv.4.running_mean', 'features.10.conv.3.weight', 'features.10.conv.0.weight', 'features.10.conv.4.weight', 'features.10.conv.4.num_batches_tracked', 'features.9.conv.4.num_batches_tracked', 'features.11.conv.8.running_mean', 'features.9.conv.4.weight', 'conv.0.weight', 'features.10.conv.1.running_var', 'conv.1.running_mean', 'features.11.conv.4.bias', 'features.9.conv.8.running_var', 'features.10.conv.1.weight', 'features.11.conv.8.running_var', 'features.10.conv.5.fc.2.bias', 'features.9.conv.8.num_batches_tracked', 'features.11.conv.8.num_batches_tracked', 'features.11.conv.4.num_batches_tracked', 'features.11.conv.0.weight', 'features.9.conv.1.bias', 'features.10.conv.7.weight', 'features.9.conv.8.weight', 'conv.1.weight', 'features.9.conv.4.running_var', 'features.9.conv.5.fc.0.weight', 'features.9.conv.1.running_var', 'features.11.conv.5.fc.2.bias', 'features.11.conv.4.weight', 'features.11.conv.1.bias', 'features.11.conv.5.fc.0.bias', 'features.9.conv.1.num_batches_tracked', 'features.10.conv.8.num_batches_tracked', 'conv.1.bias', 'features.10.conv.1.bias', 'features.11.conv.1.num_batches_tracked', 'features.11.conv.1.weight', 'conv.1.running_var', 'features.10.conv.5.fc.2.weight', 'features.10.conv.8.running_mean', 'features.11.conv.5.fc.2.weight', 'classifier.0.weight', 'features.9.conv.5.fc.2.weight', 'features.9.conv.5.fc.2.bias', 'features.9.conv.0.weight'}
+[2024-06-29 06:32:46,040-rk0-model_load.py# 29] unused checkpoint keys:76
+[2024-06-29 06:32:46,040-rk0-model_load.py# 31] used keys:168
+[2024-06-29 06:32:46,048-rk0-train.py# 56] build train dataset
+[2024-06-29 06:32:46,048-rk0-dataset.py# 39] loading GOT
+[2024-06-29 06:32:48,208-rk0-dataset.py# 64] GOT loaded
+[2024-06-29 06:32:48,215-rk0-dataset.py# 91] GOT start-index 0 select [100000/9335] path_format {}.{}.{}.jpg
+[2024-06-29 06:32:48,340-rk0-dataset.py#204] shuffle done!
+[2024-06-29 06:32:48,340-rk0-dataset.py#205] dataset length 5000000
+[2024-06-29 06:32:48,349-rk0-train.py# 60] build dataset done
+[2024-06-29 06:32:48,349-rk0-train.py#294] (WarmUPScheduler) lr spaces: 
+[0.001      0.00137973 0.00190365 0.00262653 0.0036239  0.005
+ 0.00474507 0.00450314 0.00427354 0.00405565 0.00384887 0.00365264
+ 0.0034664  0.00328967 0.00312194 0.00296277 0.00281171 0.00266835
+ 0.0025323  0.00240319 0.00228066 0.00216438 0.00205403 0.0019493
+ 0.00184992 0.0017556  0.00166609 0.00158114 0.00150052 0.00142402
+ 0.00135141 0.00128251 0.00121712 0.00115506 0.00109617 0.00104028
+ 0.00098724 0.00093691 0.00088914 0.00084381 0.00080078 0.00075996
+ 0.00072121 0.00068444 0.00064954 0.00061642 0.00058499 0.00055517
+ 0.00052686 0.0005    ]
+[2024-06-29 06:32:48,357-rk0-train.py#295] model prepare done
+[2024-06-29 06:32:48,357-rk0-train.py#163] model
+.[31mbackbone[0m (MobileNetV3)
+         .[31mfeatures[0m (Sequential)
+                  .[31m0[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - weight
+                    .1 (BatchNorm2d)
+                      - weight
+                      - bias
+                    .[31m2[0m (h_swish)
+                      .[31mhard_swish[0m (Hardswish)
+                  .[31m1[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m4[0m (Conv2d)
+                           - weight
+                         .5 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m2[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m3[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m4[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m5[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m6[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m7[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m8[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+.[31mneck[0m (AdjustLayer)
+     .[31mdownsample[0m (Sequential)
+                .[31m0[0m (Conv2d)
+                  - [31mweight[0m
+                .[31m1[0m (BatchNorm2d)
+                  - [31mweight[0m
+                  - [31mbias[0m
+.[31mban_head[0m (DepthwiseBAN)
+         .[31mcorr_dw_reg[0m (DepthwiseXCorr)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+         .[31mcorr_pw_reg[0m (PixelwiseXCorr)
+                     .[31mCA_layer[0m (CAModule)
+                              .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                              .[31mfc1[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31mrelu[0m (ReLU)
+                              .[31mfc2[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31msigmoid[0m (Sigmoid)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv[0m (Sequential)
+                          .[31m0[0m (Conv2d)
+                            - [31mweight[0m
+                          .[31m1[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m2[0m (ReLU6)
+                          .[31m3[0m (Conv2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m4[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+         .[31mcorr_dw_cls[0m (DepthwiseXCorr)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+         .[31mcorr_pw_cls[0m (PixelwiseXCorr)
+                     .[31mCA_layer[0m (CAModule)
+                              .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                              .[31mfc1[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31mrelu[0m (ReLU)
+                              .[31mfc2[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31msigmoid[0m (Sigmoid)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv[0m (Sequential)
+                          .[31m0[0m (Conv2d)
+                            - [31mweight[0m
+                          .[31m1[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m2[0m (ReLU6)
+                          .[31m3[0m (Conv2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m4[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+         .[31mcls_tower[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m1[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m2[0m (ReLU6)
+                   .[31m3[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m4[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m5[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m6[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m7[0m (ReLU6)
+                   .[31m8[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m9[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m10[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m11[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m12[0m (ReLU6)
+                   .[31m13[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m14[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m15[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m16[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m17[0m (ReLU6)
+                   .[31m18[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m19[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m20[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m21[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m22[0m (ReLU6)
+                   .[31m23[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m24[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m25[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m26[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m27[0m (ReLU6)
+                   .[31m28[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m29[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+         .[31mbbox_tower[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m1[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m2[0m (ReLU6)
+                    .[31m3[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m4[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m5[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m6[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m7[0m (ReLU6)
+                    .[31m8[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m9[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m10[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m11[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m12[0m (ReLU6)
+                    .[31m13[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m14[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m15[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m16[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m17[0m (ReLU6)
+                    .[31m18[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m19[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m20[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m21[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m22[0m (ReLU6)
+                    .[31m23[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m24[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m25[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m26[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m27[0m (ReLU6)
+                    .[31m28[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m29[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+         .[31mcls_logits[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+         .[31mbbox_pred[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+         .[31mdown_reg[0m (Sequential)
+                  .[31m0[0m (Conv2d)
+                    - [31mweight[0m
+                    - [31mbias[0m
+         .[31mdown_cls[0m (Sequential)
+                  .[31m0[0m (Conv2d)
+                    - [31mweight[0m
+                    - [31mbias[0m
+[2024-06-29 06:38:18,732-rk0-train.py#262] Version Information: 
+commit : 
+  log  : 
+
+[2024-06-29 06:38:18,732-rk0-train.py#263] config 
+{
+    "META_ARC": "nanotrack",
+    "CUDA": true,
+    "TRAIN": {
+        "NEG_NUM": 16,
+        "POS_NUM": 16,
+        "TOTAL_NUM": 64,
+        "EXEMPLAR_SIZE": 127,
+        "SEARCH_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "RESUME": "",
+        "PRETRAINED": "",
+        "LOG_DIR": "./logs",
+        "SNAPSHOT_DIR": "./models/snapshot",
+        "EPOCH": 50,
+        "START_EPOCH": 0,
+        "NUM_CONVS": 4,
+        "BATCH_SIZE": 32,
+        "NUM_WORKERS": 8,
+        "MOMENTUM": 0.9,
+        "WEIGHT_DECAY": 0.0001,
+        "CLS_WEIGHT": 1.0,
+        "LOC_WEIGHT": 1.0,
+        "PRINT_FREQ": 20,
+        "LOG_GRADS": false,
+        "GRAD_CLIP": 10.0,
+        "BASE_LR": 0.005,
+        "LR": {
+            "TYPE": "log",
+            "KWARGS": {
+                "start_lr": 0.005,
+                "end_lr": 0.0005
+            }
+        },
+        "LR_WARMUP": {
+            "WARMUP": true,
+            "TYPE": "step",
+            "EPOCH": 5,
+            "KWARGS": {
+                "start_lr": 0.001,
+                "end_lr": 0.005,
+                "step": 1
+            }
+        }
+    },
+    "MASK": {
+        "MASK": false
+    },
+    "DATASET": {
+        "TEMPLATE": {
+            "SHIFT": 4,
+            "SCALE": 0.05,
+            "BLUR": 0.0,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "SEARCH": {
+            "SHIFT": 64,
+            "SCALE": 0.18,
+            "BLUR": 0.2,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "NEG": 0.2,
+        "GRAY": 0.0,
+        "NAMES": [
+            "GOT"
+        ],
+        "VID": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "YOUTUBEBB": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 3,
+            "NUM_USE": 100000
+        },
+        "COCO": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "DET": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "GOT": {
+            "ROOT": "data/GOT-10k/crop511",
+            "ANNO": "data/GOT-10k/train.json",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "LASOT": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "VIDEOS_PER_EPOCH": 100000
+    },
+    "BACKBONE": {
+        "TYPE": "mobilenetv3_small",
+        "KWARGS": {
+            "used_layers": [
+                4
+            ]
+        },
+        "PRETRAINED": "./models/pretrained/mobilenetv3_small_1.0.pth",
+        "TRAIN_LAYERS": [
+            "features"
+        ],
+        "LAYERS_LR": 0.1,
+        "TRAIN_EPOCH": 10
+    },
+    "ADJUST": {
+        "ADJUST": true,
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        },
+        "TYPE": "AdjustLayer"
+    },
+    "BAN": {
+        "BAN": true,
+        "TYPE": "DepthwiseBAN",
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        }
+    },
+    "POINT": {
+        "STRIDE": 16
+    },
+    "TRACK": {
+        "TYPE": "NanoTracker",
+        "PENALTY_K": 0.148,
+        "WINDOW_INFLUENCE": 0.462,
+        "LR": 0.39,
+        "EXEMPLAR_SIZE": 127,
+        "INSTANCE_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "CONTEXT_AMOUNT": 0.5
+    }
+}
+[2024-06-29 06:38:18,846-rk0-model_load.py# 44] load pretrained model from C:\Users\LenovoPC\Desktop\SiamTrackers-master\NanoTrack\bin\.././models/pretrained/mobilenetv3_small_1.0.pth
+[2024-06-29 06:38:18,860-rk0-model_load.py# 39] remove prefix 'module.'
+[2024-06-29 06:38:18,861-rk0-model_load.py# 27] [Warning] unused_pretrained_keys: {'features.9.conv.3.weight', 'features.9.conv.1.bias', 'features.11.conv.1.num_batches_tracked', 'features.10.conv.4.running_mean', 'features.11.conv.5.fc.0.bias', 'features.10.conv.1.running_mean', 'features.11.conv.4.num_batches_tracked', 'features.10.conv.7.weight', 'features.9.conv.5.fc.2.bias', 'features.10.conv.8.weight', 'conv.1.bias', 'features.10.conv.1.bias', 'features.9.conv.8.weight', 'features.11.conv.1.running_var', 'features.11.conv.3.weight', 'features.10.conv.8.bias', 'features.9.conv.1.running_mean', 'features.10.conv.8.running_var', 'features.9.conv.5.fc.0.weight', 'features.10.conv.3.weight', 'features.10.conv.8.running_mean', 'features.9.conv.4.weight', 'features.9.conv.5.fc.2.weight', 'features.10.conv.1.weight', 'features.10.conv.5.fc.2.bias', 'features.11.conv.5.fc.2.weight', 'features.10.conv.5.fc.2.weight', 'conv.0.weight', 'features.9.conv.1.num_batches_tracked', 'features.11.conv.0.weight', 'features.10.conv.5.fc.0.bias', 'features.9.conv.0.weight', 'classifier.0.bias', 'features.11.conv.8.bias', 'features.11.conv.5.fc.2.bias', 'classifier.3.bias', 'features.9.conv.5.fc.0.bias', 'conv.1.running_var', 'features.10.conv.4.bias', 'features.9.conv.4.running_mean', 'features.10.conv.1.running_var', 'features.11.conv.8.running_mean', 'classifier.3.weight', 'features.11.conv.8.num_batches_tracked', 'features.11.conv.4.bias', 'features.10.conv.0.weight', 'features.11.conv.7.weight', 'features.9.conv.8.running_mean', 'features.11.conv.8.weight', 'conv.1.weight', 'features.9.conv.4.running_var', 'conv.1.running_mean', 'features.11.conv.1.weight', 'features.10.conv.1.num_batches_tracked', 'features.11.conv.4.weight', 'features.11.conv.4.running_mean', 'features.9.conv.8.num_batches_tracked', 'features.9.conv.1.weight', 'features.9.conv.8.bias', 'features.10.conv.4.running_var', 'features.10.conv.8.num_batches_tracked', 'features.10.conv.5.fc.0.weight', 'features.11.conv.4.running_var', 'features.10.conv.4.num_batches_tracked', 'classifier.0.weight', 'features.9.conv.4.bias', 'features.9.conv.8.running_var', 'features.10.conv.4.weight', 'features.11.conv.1.bias', 'conv.1.num_batches_tracked', 'features.9.conv.4.num_batches_tracked', 'features.9.conv.7.weight', 'features.11.conv.5.fc.0.weight', 'features.11.conv.8.running_var', 'features.11.conv.1.running_mean', 'features.9.conv.1.running_var'}
+[2024-06-29 06:38:18,861-rk0-model_load.py# 29] unused checkpoint keys:76
+[2024-06-29 06:38:18,861-rk0-model_load.py# 31] used keys:168
+[2024-06-29 06:38:18,866-rk0-train.py# 56] build train dataset
+[2024-06-29 06:38:18,866-rk0-dataset.py# 39] loading GOT
+[2024-06-29 06:38:21,043-rk0-dataset.py# 64] GOT loaded
+[2024-06-29 06:38:21,043-rk0-dataset.py# 91] GOT start-index 0 select [100000/9335] path_format {}.{}.{}.jpg
+[2024-06-29 06:38:21,168-rk0-dataset.py#204] shuffle done!
+[2024-06-29 06:38:21,168-rk0-dataset.py#205] dataset length 5000000
+[2024-06-29 06:38:21,183-rk0-train.py# 60] build dataset done
+[2024-06-29 06:38:21,184-rk0-train.py#293] (WarmUPScheduler) lr spaces: 
+[0.001      0.00137973 0.00190365 0.00262653 0.0036239  0.005
+ 0.00474507 0.00450314 0.00427354 0.00405565 0.00384887 0.00365264
+ 0.0034664  0.00328967 0.00312194 0.00296277 0.00281171 0.00266835
+ 0.0025323  0.00240319 0.00228066 0.00216438 0.00205403 0.0019493
+ 0.00184992 0.0017556  0.00166609 0.00158114 0.00150052 0.00142402
+ 0.00135141 0.00128251 0.00121712 0.00115506 0.00109617 0.00104028
+ 0.00098724 0.00093691 0.00088914 0.00084381 0.00080078 0.00075996
+ 0.00072121 0.00068444 0.00064954 0.00061642 0.00058499 0.00055517
+ 0.00052686 0.0005    ]
+[2024-06-29 06:38:21,184-rk0-train.py#294] model prepare done
+[2024-06-29 06:38:21,187-rk0-train.py#163] model
+.[31mbackbone[0m (MobileNetV3)
+         .[31mfeatures[0m (Sequential)
+                  .[31m0[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - weight
+                    .1 (BatchNorm2d)
+                      - weight
+                      - bias
+                    .[31m2[0m (h_swish)
+                      .[31mhard_swish[0m (Hardswish)
+                  .[31m1[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m4[0m (Conv2d)
+                           - weight
+                         .5 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m2[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m3[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m4[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m5[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m6[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m7[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m8[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+.[31mneck[0m (AdjustLayer)
+     .[31mdownsample[0m (Sequential)
+                .[31m0[0m (Conv2d)
+                  - [31mweight[0m
+                .[31m1[0m (BatchNorm2d)
+                  - [31mweight[0m
+                  - [31mbias[0m
+.[31mban_head[0m (DepthwiseBAN)
+         .[31mcorr_dw_reg[0m (DepthwiseXCorr)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+         .[31mcorr_pw_reg[0m (PixelwiseXCorr)
+                     .[31mCA_layer[0m (CAModule)
+                              .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                              .[31mfc1[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31mrelu[0m (ReLU)
+                              .[31mfc2[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31msigmoid[0m (Sigmoid)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv[0m (Sequential)
+                          .[31m0[0m (Conv2d)
+                            - [31mweight[0m
+                          .[31m1[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m2[0m (ReLU6)
+                          .[31m3[0m (Conv2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m4[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+         .[31mcorr_dw_cls[0m (DepthwiseXCorr)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+         .[31mcorr_pw_cls[0m (PixelwiseXCorr)
+                     .[31mCA_layer[0m (CAModule)
+                              .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                              .[31mfc1[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31mrelu[0m (ReLU)
+                              .[31mfc2[0m (Conv2d)
+                                  - [31mweight[0m
+                                  - [31mbias[0m
+                              .[31msigmoid[0m (Sigmoid)
+                     .[31mconv_kernel[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv_search[0m (Sequential)
+                                 .[31m0[0m (Conv2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                                 .[31m1[0m (BatchNorm2d)
+                                   - [31mweight[0m
+                                   - [31mbias[0m
+                     .[31mconv[0m (Sequential)
+                          .[31m0[0m (Conv2d)
+                            - [31mweight[0m
+                          .[31m1[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m2[0m (ReLU6)
+                          .[31m3[0m (Conv2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+                          .[31m4[0m (BatchNorm2d)
+                            - [31mweight[0m
+                            - [31mbias[0m
+         .[31mcls_tower[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m1[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m2[0m (ReLU6)
+                   .[31m3[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m4[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m5[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m6[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m7[0m (ReLU6)
+                   .[31m8[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m9[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m10[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m11[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m12[0m (ReLU6)
+                   .[31m13[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m14[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m15[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m16[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m17[0m (ReLU6)
+                   .[31m18[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m19[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m20[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m21[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m22[0m (ReLU6)
+                   .[31m23[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m24[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m25[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m26[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m27[0m (ReLU6)
+                   .[31m28[0m (Conv2d)
+                      - [31mweight[0m
+                   .[31m29[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+         .[31mbbox_tower[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m1[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m2[0m (ReLU6)
+                    .[31m3[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m4[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m5[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m6[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m7[0m (ReLU6)
+                    .[31m8[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m9[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m10[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m11[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m12[0m (ReLU6)
+                    .[31m13[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m14[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m15[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m16[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m17[0m (ReLU6)
+                    .[31m18[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m19[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m20[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m21[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m22[0m (ReLU6)
+                    .[31m23[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m24[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m25[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m26[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m27[0m (ReLU6)
+                    .[31m28[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m29[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+         .[31mcls_logits[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+         .[31mbbox_pred[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+         .[31mdown_reg[0m (Sequential)
+                  .[31m0[0m (Conv2d)
+                    - [31mweight[0m
+                    - [31mbias[0m
+         .[31mdown_cls[0m (Sequential)
+                  .[31m0[0m (Conv2d)
+                    - [31mweight[0m
+                    - [31mbias[0m
+[2024-06-29 06:41:42,730-rk0-train.py#262] Version Information: 
+commit : 
+  log  : 
+
+[2024-06-29 06:41:42,730-rk0-train.py#263] config 
+{
+    "META_ARC": "nanotrack",
+    "CUDA": true,
+    "TRAIN": {
+        "NEG_NUM": 16,
+        "POS_NUM": 16,
+        "TOTAL_NUM": 64,
+        "EXEMPLAR_SIZE": 127,
+        "SEARCH_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "RESUME": "",
+        "PRETRAINED": "",
+        "LOG_DIR": "./logs",
+        "SNAPSHOT_DIR": "./models/snapshot",
+        "EPOCH": 50,
+        "START_EPOCH": 0,
+        "NUM_CONVS": 4,
+        "BATCH_SIZE": 32,
+        "NUM_WORKERS": 8,
+        "MOMENTUM": 0.9,
+        "WEIGHT_DECAY": 0.0001,
+        "CLS_WEIGHT": 1.0,
+        "LOC_WEIGHT": 1.0,
+        "PRINT_FREQ": 20,
+        "LOG_GRADS": false,
+        "GRAD_CLIP": 10.0,
+        "BASE_LR": 0.005,
+        "LR": {
+            "TYPE": "log",
+            "KWARGS": {
+                "start_lr": 0.005,
+                "end_lr": 0.0005
+            }
+        },
+        "LR_WARMUP": {
+            "WARMUP": true,
+            "TYPE": "step",
+            "EPOCH": 5,
+            "KWARGS": {
+                "start_lr": 0.001,
+                "end_lr": 0.005,
+                "step": 1
+            }
+        }
+    },
+    "MASK": {
+        "MASK": false
+    },
+    "DATASET": {
+        "TEMPLATE": {
+            "SHIFT": 4,
+            "SCALE": 0.05,
+            "BLUR": 0.0,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "SEARCH": {
+            "SHIFT": 64,
+            "SCALE": 0.18,
+            "BLUR": 0.2,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "NEG": 0.2,
+        "GRAY": 0.0,
+        "NAMES": [
+            "GOT"
+        ],
+        "VID": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "YOUTUBEBB": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 3,
+            "NUM_USE": 100000
+        },
+        "COCO": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "DET": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "GOT": {
+            "ROOT": "data/GOT-10k/crop511",
+            "ANNO": "data/GOT-10k/train.json",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "LASOT": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "VIDEOS_PER_EPOCH": 100000
+    },
+    "BACKBONE": {
+        "TYPE": "mobilenetv3_small",
+        "KWARGS": {
+            "used_layers": [
+                4
+            ]
+        },
+        "PRETRAINED": "./models/pretrained/mobilenetv3_small_1.0.pth",
+        "TRAIN_LAYERS": [
+            "features"
+        ],
+        "LAYERS_LR": 0.1,
+        "TRAIN_EPOCH": 10
+    },
+    "ADJUST": {
+        "ADJUST": true,
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        },
+        "TYPE": "AdjustLayer"
+    },
+    "BAN": {
+        "BAN": true,
+        "TYPE": "DepthwiseBAN",
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        }
+    },
+    "POINT": {
+        "STRIDE": 16
+    },
+    "TRACK": {
+        "TYPE": "NanoTracker",
+        "PENALTY_K": 0.148,
+        "WINDOW_INFLUENCE": 0.462,
+        "LR": 0.39,
+        "EXEMPLAR_SIZE": 127,
+        "INSTANCE_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "CONTEXT_AMOUNT": 0.5
+    }
+}
+[2024-06-29 06:41:42,858-rk0-model_load.py# 44] load pretrained model from C:\Users\LenovoPC\Desktop\SiamTrackers-master\NanoTrack\bin\.././models/pretrained/mobilenetv3_small_1.0.pth
+[2024-06-29 06:41:42,858-rk0-model_load.py# 39] remove prefix 'module.'
+[2024-06-29 06:41:42,858-rk0-model_load.py# 27] [Warning] unused_pretrained_keys: {'features.11.conv.7.weight', 'features.10.conv.8.num_batches_tracked', 'features.11.conv.4.bias', 'features.11.conv.4.running_mean', 'features.10.conv.1.running_var', 'features.10.conv.5.fc.2.weight', 'features.9.conv.8.running_var', 'features.10.conv.1.num_batches_tracked', 'features.9.conv.5.fc.0.weight', 'features.11.conv.8.num_batches_tracked', 'features.9.conv.1.num_batches_tracked', 'features.11.conv.4.running_var', 'classifier.3.bias', 'features.11.conv.1.running_var', 'conv.1.weight', 'conv.1.num_batches_tracked', 'features.9.conv.8.weight', 'classifier.0.bias', 'classifier.0.weight', 'features.10.conv.1.weight', 'features.9.conv.5.fc.2.weight', 'conv.1.bias', 'features.9.conv.4.running_var', 'features.9.conv.1.running_var', 'features.10.conv.4.num_batches_tracked', 'features.9.conv.0.weight', 'features.9.conv.8.running_mean', 'features.9.conv.5.fc.2.bias', 'features.11.conv.8.weight', 'features.11.conv.5.fc.0.bias', 'features.10.conv.1.running_mean', 'features.11.conv.8.bias', 'features.9.conv.4.bias', 'features.11.conv.8.running_var', 'features.11.conv.4.num_batches_tracked', 'features.10.conv.8.running_mean', 'features.9.conv.8.bias', 'features.10.conv.4.running_var', 'features.10.conv.3.weight', 'features.9.conv.5.fc.0.bias', 'features.11.conv.1.num_batches_tracked', 'features.10.conv.8.weight', 'features.11.conv.8.running_mean', 'features.10.conv.8.running_var', 'features.9.conv.4.num_batches_tracked', 'features.10.conv.1.bias', 'features.10.conv.0.weight', 'conv.1.running_mean', 'features.10.conv.8.bias', 'features.9.conv.3.weight', 'conv.1.running_var', 'features.9.conv.4.weight', 'features.9.conv.1.weight', 'features.11.conv.3.weight', 'features.10.conv.4.running_mean', 'features.11.conv.5.fc.2.bias', 'classifier.3.weight', 'features.11.conv.0.weight', 'features.11.conv.1.running_mean', 'features.11.conv.1.weight', 'features.11.conv.1.bias', 'features.10.conv.5.fc.2.bias', 'features.11.conv.4.weight', 'features.10.conv.5.fc.0.bias', 'features.9.conv.7.weight', 'features.10.conv.4.weight', 'features.10.conv.4.bias', 'features.11.conv.5.fc.2.weight', 'features.9.conv.1.bias', 'features.10.conv.5.fc.0.weight', 'features.9.conv.4.running_mean', 'features.10.conv.7.weight', 'conv.0.weight', 'features.11.conv.5.fc.0.weight', 'features.9.conv.8.num_batches_tracked', 'features.9.conv.1.running_mean'}
+[2024-06-29 06:41:42,858-rk0-model_load.py# 29] unused checkpoint keys:76
+[2024-06-29 06:41:42,858-rk0-model_load.py# 31] used keys:168
+[2024-06-29 06:41:42,873-rk0-train.py# 56] build train dataset
+[2024-06-29 06:41:42,873-rk0-dataset.py# 39] loading GOT
+[2024-06-29 06:41:45,032-rk0-dataset.py# 64] GOT loaded
+[2024-06-29 06:41:45,032-rk0-dataset.py# 91] GOT start-index 0 select [100000/9335] path_format {}.{}.{}.jpg
+[2024-06-29 06:41:45,148-rk0-dataset.py#204] shuffle done!
+[2024-06-29 06:41:45,148-rk0-dataset.py#205] dataset length 5000000
+[2024-06-29 06:41:45,168-rk0-train.py# 60] build dataset done
+[2024-06-29 06:41:45,168-rk0-train.py#293] (WarmUPScheduler) lr spaces: 
+[0.001      0.00137973 0.00190365 0.00262653 0.0036239  0.005
+ 0.00474507 0.00450314 0.00427354 0.00405565 0.00384887 0.00365264
+ 0.0034664  0.00328967 0.00312194 0.00296277 0.00281171 0.00266835
+ 0.0025323  0.00240319 0.00228066 0.00216438 0.00205403 0.0019493
+ 0.00184992 0.0017556  0.00166609 0.00158114 0.00150052 0.00142402
+ 0.00135141 0.00128251 0.00121712 0.00115506 0.00109617 0.00104028
+ 0.00098724 0.00093691 0.00088914 0.00084381 0.00080078 0.00075996
+ 0.00072121 0.00068444 0.00064954 0.00061642 0.00058499 0.00055517
+ 0.00052686 0.0005    ]
+[2024-06-29 06:41:45,168-rk0-train.py#294] model prepare done
+[2024-06-29 06:41:45,168-rk0-train.py#163] model
+.[31mbackbone[0m (MobileNetV3)
+         .[31mfeatures[0m (Sequential)
+                  .[31m0[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - weight
+                    .1 (BatchNorm2d)
+                      - weight
+                      - bias
+                    .[31m2[0m (h_swish)
+                      .[31mhard_swish[0m (Hardswish)
+                  .[31m1[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m4[0m (Conv2d)
+                           - weight
+                         .5 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m2[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m3[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m4[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m5[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m6[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m7[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m8[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+.[31mneck[0m (AdjustLayer)
+     .[31mdownsample[0m (Sequential)
+                .[31m0[0m (Conv2d)
+                  - [31mweight[0m
+                .[31m1[0m (BatchNorm2d)
+                  - [31mweight[0m
+                  - [31mbias[0m
+.[31mban_head[0m (DepthwiseBAN)
+         .[31mcorr_pw[0m (PixelwiseXCorr)
+                 .[31mCA_layer[0m (CAModule)
+                          .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                          .[31mfc1[0m (Conv2d)
+                              - [31mweight[0m
+                              - [31mbias[0m
+                          .[31mrelu[0m (ReLU)
+                          .[31mfc2[0m (Conv2d)
+                              - [31mweight[0m
+                              - [31mbias[0m
+                          .[31msigmoid[0m (Sigmoid)
+         .[31mcls_tower[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m1[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m2[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m3[0m (ReLU6)
+                   .[31m4[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m5[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m6[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m7[0m (ReLU6)
+                   .[31m8[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m9[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m10[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m11[0m (ReLU6)
+         .[31mbbox_tower[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m1[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m2[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m3[0m (ReLU6)
+                    .[31m4[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m5[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m6[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m7[0m (ReLU6)
+                    .[31m8[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m9[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m10[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m11[0m (ReLU6)
+                    .[31m12[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m13[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m14[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m15[0m (ReLU6)
+         .[31mcls_logits[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+         .[31mbbox_pred[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+[2024-06-29 06:58:20,274-rk0-train.py#262] Version Information: 
+commit : 
+  log  : 
+
+[2024-06-29 06:58:20,274-rk0-train.py#263] config 
+{
+    "META_ARC": "nanotrack",
+    "CUDA": true,
+    "TRAIN": {
+        "NEG_NUM": 16,
+        "POS_NUM": 16,
+        "TOTAL_NUM": 64,
+        "EXEMPLAR_SIZE": 127,
+        "SEARCH_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "RESUME": "",
+        "PRETRAINED": "",
+        "LOG_DIR": "./logs",
+        "SNAPSHOT_DIR": "./models/snapshot",
+        "EPOCH": 50,
+        "START_EPOCH": 0,
+        "NUM_CONVS": 4,
+        "BATCH_SIZE": 32,
+        "NUM_WORKERS": 8,
+        "MOMENTUM": 0.9,
+        "WEIGHT_DECAY": 0.0001,
+        "CLS_WEIGHT": 1.0,
+        "LOC_WEIGHT": 1.0,
+        "PRINT_FREQ": 20,
+        "LOG_GRADS": false,
+        "GRAD_CLIP": 10.0,
+        "BASE_LR": 0.005,
+        "LR": {
+            "TYPE": "log",
+            "KWARGS": {
+                "start_lr": 0.005,
+                "end_lr": 0.0005
+            }
+        },
+        "LR_WARMUP": {
+            "WARMUP": true,
+            "TYPE": "step",
+            "EPOCH": 5,
+            "KWARGS": {
+                "start_lr": 0.001,
+                "end_lr": 0.005,
+                "step": 1
+            }
+        }
+    },
+    "MASK": {
+        "MASK": false
+    },
+    "DATASET": {
+        "TEMPLATE": {
+            "SHIFT": 4,
+            "SCALE": 0.05,
+            "BLUR": 0.0,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "SEARCH": {
+            "SHIFT": 64,
+            "SCALE": 0.18,
+            "BLUR": 0.2,
+            "FLIP": 0.0,
+            "COLOR": 1.0
+        },
+        "NEG": 0.2,
+        "GRAY": 0.0,
+        "NAMES": [
+            "GOT"
+        ],
+        "VID": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "YOUTUBEBB": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 3,
+            "NUM_USE": 100000
+        },
+        "COCO": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "DET": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 1,
+            "NUM_USE": 100000
+        },
+        "GOT": {
+            "ROOT": "data/GOT-10k/crop511",
+            "ANNO": "data/GOT-10k/train.json",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "LASOT": {
+            "ROOT": "",
+            "ANNO": "",
+            "FRAME_RANGE": 100,
+            "NUM_USE": 100000
+        },
+        "VIDEOS_PER_EPOCH": 100000
+    },
+    "BACKBONE": {
+        "TYPE": "mobilenetv3_small",
+        "KWARGS": {
+            "used_layers": [
+                4
+            ]
+        },
+        "PRETRAINED": "./models/pretrained/mobilenetv3_small_1.0.pth",
+        "TRAIN_LAYERS": [
+            "features"
+        ],
+        "LAYERS_LR": 0.1,
+        "TRAIN_EPOCH": 10
+    },
+    "ADJUST": {
+        "ADJUST": true,
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        },
+        "TYPE": "AdjustLayer"
+    },
+    "BAN": {
+        "BAN": true,
+        "TYPE": "DepthwiseBAN",
+        "KWARGS": {
+            "in_channels": 64,
+            "out_channels": 64
+        }
+    },
+    "POINT": {
+        "STRIDE": 16
+    },
+    "TRACK": {
+        "TYPE": "NanoTracker",
+        "PENALTY_K": 0.148,
+        "WINDOW_INFLUENCE": 0.462,
+        "LR": 0.39,
+        "EXEMPLAR_SIZE": 127,
+        "INSTANCE_SIZE": 255,
+        "BASE_SIZE": 7,
+        "OUTPUT_SIZE": 16,
+        "CONTEXT_AMOUNT": 0.5
+    }
+}
+[2024-06-29 06:58:20,389-rk0-model_load.py# 44] load pretrained model from C:\Users\LenovoPC\Desktop\SiamTrackers-master\NanoTrack\bin\.././models/pretrained/mobilenetv3_small_1.0.pth
+[2024-06-29 06:58:20,394-rk0-model_load.py# 39] remove prefix 'module.'
+[2024-06-29 06:58:20,398-rk0-model_load.py# 27] [Warning] unused_pretrained_keys: {'features.11.conv.4.running_mean', 'features.9.conv.1.bias', 'features.10.conv.5.fc.2.weight', 'features.11.conv.5.fc.2.bias', 'features.10.conv.4.weight', 'features.11.conv.5.fc.2.weight', 'features.9.conv.4.num_batches_tracked', 'features.11.conv.1.running_var', 'conv.1.running_mean', 'features.11.conv.8.weight', 'classifier.3.weight', 'features.10.conv.4.bias', 'features.9.conv.1.num_batches_tracked', 'features.9.conv.4.bias', 'features.11.conv.5.fc.0.weight', 'features.11.conv.4.bias', 'features.10.conv.8.num_batches_tracked', 'features.9.conv.8.running_mean', 'features.11.conv.1.running_mean', 'features.10.conv.7.weight', 'features.9.conv.5.fc.2.bias', 'features.10.conv.4.num_batches_tracked', 'features.9.conv.3.weight', 'conv.1.weight', 'features.9.conv.0.weight', 'features.9.conv.8.num_batches_tracked', 'features.11.conv.1.bias', 'features.9.conv.8.bias', 'conv.1.bias', 'conv.0.weight', 'features.11.conv.8.running_mean', 'features.11.conv.4.num_batches_tracked', 'features.9.conv.1.running_var', 'features.11.conv.5.fc.0.bias', 'features.10.conv.3.weight', 'features.11.conv.1.weight', 'classifier.0.bias', 'features.11.conv.7.weight', 'features.11.conv.8.num_batches_tracked', 'features.10.conv.1.running_var', 'classifier.3.bias', 'features.11.conv.4.weight', 'features.11.conv.8.running_var', 'features.10.conv.1.weight', 'features.9.conv.4.weight', 'features.10.conv.1.running_mean', 'features.10.conv.8.running_mean', 'features.9.conv.5.fc.0.weight', 'features.10.conv.5.fc.2.bias', 'features.9.conv.8.running_var', 'features.11.conv.0.weight', 'conv.1.num_batches_tracked', 'features.10.conv.1.bias', 'features.9.conv.4.running_mean', 'features.9.conv.4.running_var', 'features.10.conv.4.running_mean', 'features.9.conv.1.weight', 'features.10.conv.0.weight', 'conv.1.running_var', 'features.9.conv.7.weight', 'features.10.conv.8.running_var', 'features.10.conv.4.running_var', 'features.10.conv.1.num_batches_tracked', 'features.11.conv.3.weight', 'features.9.conv.5.fc.2.weight', 'features.11.conv.4.running_var', 'features.10.conv.5.fc.0.weight', 'features.11.conv.8.bias', 'features.9.conv.1.running_mean', 'features.10.conv.8.bias', 'features.11.conv.1.num_batches_tracked', 'features.10.conv.8.weight', 'features.9.conv.8.weight', 'features.10.conv.5.fc.0.bias', 'features.9.conv.5.fc.0.bias', 'classifier.0.weight'}
+[2024-06-29 06:58:20,398-rk0-model_load.py# 29] unused checkpoint keys:76
+[2024-06-29 06:58:20,398-rk0-model_load.py# 31] used keys:168
+[2024-06-29 06:58:20,402-rk0-train.py# 56] build train dataset
+[2024-06-29 06:58:20,402-rk0-dataset.py# 39] loading GOT
+[2024-06-29 06:58:22,601-rk0-dataset.py# 64] GOT loaded
+[2024-06-29 06:58:22,609-rk0-dataset.py# 91] GOT start-index 0 select [100000/9335] path_format {}.{}.{}.jpg
+[2024-06-29 06:58:22,730-rk0-dataset.py#204] shuffle done!
+[2024-06-29 06:58:22,763-rk0-dataset.py#205] dataset length 5000000
+[2024-06-29 06:58:22,779-rk0-train.py# 60] build dataset done
+[2024-06-29 06:58:22,804-rk0-train.py#293] (WarmUPScheduler) lr spaces: 
+[0.001      0.00137973 0.00190365 0.00262653 0.0036239  0.005
+ 0.00474507 0.00450314 0.00427354 0.00405565 0.00384887 0.00365264
+ 0.0034664  0.00328967 0.00312194 0.00296277 0.00281171 0.00266835
+ 0.0025323  0.00240319 0.00228066 0.00216438 0.00205403 0.0019493
+ 0.00184992 0.0017556  0.00166609 0.00158114 0.00150052 0.00142402
+ 0.00135141 0.00128251 0.00121712 0.00115506 0.00109617 0.00104028
+ 0.00098724 0.00093691 0.00088914 0.00084381 0.00080078 0.00075996
+ 0.00072121 0.00068444 0.00064954 0.00061642 0.00058499 0.00055517
+ 0.00052686 0.0005    ]
+[2024-06-29 06:58:22,804-rk0-train.py#294] model prepare done
+[2024-06-29 06:58:22,812-rk0-train.py#163] model
+.[31mbackbone[0m (MobileNetV3)
+         .[31mfeatures[0m (Sequential)
+                  .[31m0[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - weight
+                    .1 (BatchNorm2d)
+                      - weight
+                      - bias
+                    .[31m2[0m (h_swish)
+                      .[31mhard_swish[0m (Hardswish)
+                  .[31m1[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m4[0m (Conv2d)
+                           - weight
+                         .5 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m2[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m3[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (ReLU)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (Identity)
+                         .[31m6[0m (ReLU)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m4[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m5[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m6[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m7[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+                  .[31m8[0m (InvertedResidual)
+                    .[31mconv[0m (Sequential)
+                         .[31m0[0m (Conv2d)
+                           - weight
+                         .1 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m2[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m3[0m (Conv2d)
+                           - weight
+                         .4 (BatchNorm2d)
+                           - weight
+                           - bias
+                         .[31m5[0m (SELayer)
+                           .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                           .[31mfc[0m (Sequential)
+                              .[31m0[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m1[0m (ReLU)
+                              .[31m2[0m (Linear)
+                                - weight
+                                - bias
+                              .[31m3[0m (h_sigmoid)
+                                .[31mhard_sigmoid[0m (Hardsigmoid)
+                         .[31m6[0m (h_swish)
+                           .[31mhard_swish[0m (Hardswish)
+                         .[31m7[0m (Conv2d)
+                           - weight
+                         .8 (BatchNorm2d)
+                           - weight
+                           - bias
+.[31mneck[0m (AdjustLayer)
+     .[31mdownsample[0m (Sequential)
+                .[31m0[0m (Conv2d)
+                  - [31mweight[0m
+                .[31m1[0m (BatchNorm2d)
+                  - [31mweight[0m
+                  - [31mbias[0m
+.[31mban_head[0m (DepthwiseBAN)
+         .[31mcorr_pw[0m (PixelwiseXCorr)
+                 .[31mCA_layer[0m (CAModule)
+                          .[31mavg_pool[0m (AdaptiveAvgPool2d)
+                          .[31mfc1[0m (Conv2d)
+                              - [31mweight[0m
+                              - [31mbias[0m
+                          .[31mrelu[0m (ReLU)
+                          .[31mfc2[0m (Conv2d)
+                              - [31mweight[0m
+                              - [31mbias[0m
+                          .[31msigmoid[0m (Sigmoid)
+         .[31mcls_tower[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m1[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m2[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m3[0m (ReLU6)
+                   .[31m4[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m5[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m6[0m (BatchNorm2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+                   .[31m7[0m (ReLU6)
+                   .[31m8[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m9[0m (Conv2d)
+                     - [31mweight[0m
+                   .[31m10[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                   .[31m11[0m (ReLU6)
+         .[31mbbox_tower[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m1[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m2[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m3[0m (ReLU6)
+                    .[31m4[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m5[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m6[0m (BatchNorm2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+                    .[31m7[0m (ReLU6)
+                    .[31m8[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m9[0m (Conv2d)
+                      - [31mweight[0m
+                    .[31m10[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m11[0m (ReLU6)
+                    .[31m12[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m13[0m (Conv2d)
+                       - [31mweight[0m
+                    .[31m14[0m (BatchNorm2d)
+                       - [31mweight[0m
+                       - [31mbias[0m
+                    .[31m15[0m (ReLU6)
+         .[31mcls_logits[0m (Sequential)
+                    .[31m0[0m (Conv2d)
+                      - [31mweight[0m
+                      - [31mbias[0m
+         .[31mbbox_pred[0m (Sequential)
+                   .[31m0[0m (Conv2d)
+                     - [31mweight[0m
+                     - [31mbias[0m
+[2024-06-30 03:31:53,436-rk0-train.py#262] Version Information: 
+commit : 
+  log  : 
+
